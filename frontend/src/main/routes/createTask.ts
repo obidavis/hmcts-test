@@ -83,7 +83,7 @@ export default function (app: Application): void {
         ).toISOString(),
       };
       try {
-        const response = await axios.post('http://localhost:8000/api/v1/tasks', task);
+        const response = await axios.post(`${process.env.BACKEND_URL}/api/v1/tasks`, task);
         console.log('Task created:', response.data);
         res.redirect('/tasks');
       } catch (error) {

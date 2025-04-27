@@ -6,7 +6,7 @@ import { Application } from 'express';
 export default function (app: Application): void {
   app.get('/tasks', async (req, res) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/tasks');
+      const response = await axios.get(`${process.env.BACKEND_URL}/api/v1/tasks`);
       const tasks: Task[] = response.data;
       res.render('all-tasks', { tasks: tasks.map(task => ({
         title: {

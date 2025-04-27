@@ -4,7 +4,7 @@ import { Application } from 'express';
 export default function (app: Application): void {
   app.get('/tasks/:id/update', async (req, res) => {
     try {
-      const { data } = await axios.get(`http://localhost:8000/api/v1/tasks/${req.params.id}`);
+      const { data } = await axios.get(`${process.env.BACKEND_URL}/api/v1/tasks/${req.params.id}`);
       const dateString = new Date(data.due_date).toLocaleDateString('en-GB', {
         year: 'numeric',
         month: '2-digit',
@@ -30,7 +30,7 @@ export default function (app: Application): void {
       status: req.body.taskStatus,
     };
     try {
-      await axios.patch(`http://localhost:8000/api/v1/tasks/${req.params.id}`, updatedTask);
+      await axios.patch(`${process.env.BACKEND_URL}/api/v1/tasks/${req.params.id}`, updatedTask);
       res.redirect(`/tasks/${req.params.id}`);
     } catch (error) {
       console.error('Error making request:', error);
