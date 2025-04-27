@@ -114,17 +114,17 @@
     },
     items: [
       {
-        classes: "govuk-input--width-2 govuk-input--error",
+        classes: "govuk-input--width-2" + (errors.dueDate and " govuk-input--error" or ""),
         name: "day",
         value: data.dueDate.day or ""
       },
       {
-        classes: "govuk-input--width-2 govuk-input--error",
+        classes: "govuk-input--width-2" + (errors.dueDate and " govuk-input--error" or ""),
         name: "month",
         value: data.dueDate.month or ""
       },
       {
-        classes: "govuk-input--width-4 govuk-input--error",
+        classes: "govuk-input--width-4" + (errors.dueDate and " govuk-input--error" or ""),
         name: "year",
         value: data.dueDate.year or ""
       }
