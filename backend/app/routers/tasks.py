@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.schemas.task import TaskCreate, TaskUpdateStatus, Task
+from app.models.tasks import DBTask
 from app.db.session import get_db
 
 router = APIRouter(
@@ -16,7 +17,7 @@ def create_task(task: TaskCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[Task])
 def get_all_tasks(db: Session = Depends(get_db)):
-    raise NotImplementedError("Get all tasks not implemented yet")
+    return db.query(DBTask).all()
     
 
 @router.get("/{task_id}", response_model=Task)
