@@ -53,6 +53,7 @@ def test_read_root(client: TestClient):
     assert data["message"] == "Welcome to the HMCTS Task Tracker API!"
 
 
+# Helper function to verify datetime string format
 def is_isoformat(date_string: str) -> bool:
     try:
         datetime.fromisoformat(date_string)
@@ -62,8 +63,10 @@ def is_isoformat(date_string: str) -> bool:
 
 
 def test_create_task(client: TestClient, session: Session):
+    # Check inital count of tasks to verify new task creation
     starting_count = session.query(DBTask).count()
 
+    # Create a new (valid) task
     new_task = {
         "title": "New Task",
         "description": "Description for new task",
@@ -72,6 +75,7 @@ def test_create_task(client: TestClient, session: Session):
     }
     response = client.post("api/v1/tasks/", json=new_task)
 
+    # Check response status and data matching
     assert response.status_code == 201, response.text
     data = response.json()
     assert data["title"] == new_task["title"]
@@ -79,22 +83,25 @@ def test_create_task(client: TestClient, session: Session):
     assert data["status"] == new_task["status"]
     assert data["due_date"] == new_task["due_date"]
 
+    # Check task count increased
     new_count = session.query(DBTask).count()
     assert new_count == starting_count + 1
 
 
 def test_create_task_invalid(client: TestClient):
+    # Create a new task with invalid data
     new_task_invalid_status = {
         "title": "New Task",
         "description": "Description for new task",
-        "status": "invalid_status",  # Invalid status
+        "status": "invalid_status",  
         "due_date": datetime(year=2025, month=4, day=25).isoformat()
     }
     response = client.post("api/v1/tasks/", json=new_task_invalid_status)
     assert response.status_code == 422, response.text
 
+    # Create a new task with missing title
     new_task_invalid_title = {
-        "title": "",  # Empty title
+        "title": "", 
         "description": "Description for new task",
         "status": TaskStatus.PENDING,
         "due_date": datetime(year=2025, month=4, day=25).isoformat()
@@ -104,7 +111,12 @@ def test_create_task_invalid(client: TestClient):
 
 
 def test_get_task_by_id(client: TestClient):
+
+    # Assuming the first task has id=1
+    # and we have already created 5 tasks in the fixture
     response = client.get("api/v1/tasks/1")
+
+    # Check response dtatus and expected data
     assert response.status_code == 200, response.text
     data = response.json()
     assert data["id"] == 1
@@ -115,6 +127,9 @@ def test_get_task_by_id(client: TestClient):
 
 
 def test_get_task_not_found(client: TestClient):
+
+    # Attempt to get a task that does not exist
+    # Assuming we have only created 5 tasks with ids 0-4
     response = client.get("api/v1/tasks/999")
     assert response.status_code == 404, response.text
     data = response.json()
@@ -125,6 +140,9 @@ def test_get_all_tasks(client: TestClient):
     response = client.get("api/v1/tasks/")
     assert response.status_code == 200, response.text
     data = response.json()
+
+    # Check if the response contains a list of tasks
+    # and each task has the expected fields
     assert isinstance(data, list)
     for task in data:
         assert isinstance(task["id"], int)
@@ -136,9 +154,15 @@ def test_get_all_tasks(client: TestClient):
 
 
 def test_update_task_status(client: TestClient):
+    # Assuming the first task has id=1
+    # and we have already created 5 tasks in the fixture
     task_id = 1
+
+    # Update the status of the task
     new_status = TaskStatus.COMPLETED
     response = client.patch(f"api/v1/tasks/{task_id}", json={"status": new_status})
+
+    # Check response status and updated data
     assert response.status_code == 200, response.text
     data = response.json()
     assert data["id"] == task_id
@@ -146,6 +170,8 @@ def test_update_task_status(client: TestClient):
 
 
 def test_update_task_status_not_found(client: TestClient):
+
+    # Attempt to update a task that does not exist
     task_id = 999
     new_status = TaskStatus.COMPLETED
     response = client.patch(f"api/v1/tasks/{task_id}", json={"status": new_status})
@@ -155,18 +181,20 @@ def test_update_task_status_not_found(client: TestClient):
 
 
 def test_update_task_status_invalid(client: TestClient):
+
+    # Attempt to update a task with an invalid status
     task_id = 1
-    new_status = "invalid_status"  # Invalid status
+    new_status = "invalid_status"
     response = client.patch(f"api/v1/tasks/{task_id}", json={"status": new_status})
     assert response.status_code == 422, response.text
 
 
 def test_delete_task(client: TestClient):
+
     task_id = 1
     response = client.delete(f"api/v1/tasks/{task_id}")
     assert response.status_code == 204, response.text
 
-    # Verify the task is deleted
     response = client.get(f"api/v1/tasks/{task_id}")
     assert response.status_code == 404, response.text
     data = response.json()
