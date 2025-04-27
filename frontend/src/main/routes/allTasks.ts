@@ -12,7 +12,7 @@ export default function (app: Application): void {
         title: {
           text: task.title,
         },
-        href: `/tasks/view/${task.id}`,
+        href: `/tasks/${task.id}`,
         status: {
           tag: {
             text: task.status,

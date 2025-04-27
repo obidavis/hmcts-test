@@ -1,0 +1,80 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% extends "template.njk" %}
+
+{% block content %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/tasks/" ~ task.id
+  }) }}
+
+  <form method="POST" action="/tasks/{{ task.id }}/update">
+    <label class="govuk-label govuk-label--s" for="task-title">Title</label>
+    <p class="govuk-body">{{ task.title }}</p>
+
+    <label class="govuk-label govuk-label--s" for="task-description">Description</label>
+    <p class="govuk-body">{{ task.description }}</p>
+
+    {{ govukRadios({
+      classes: "govuk-radios--small",
+      name: "taskStatus",
+      fieldset: {
+        legend: {
+          text: "Status",
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--s"
+        }
+      },
+      items: [
+        {
+          value: "pending",
+          text: "Pending",
+          checked: task.status == "pending"
+        },
+        {
+          value: "in_progress",
+          text: "In Progress",
+          checked: task.status == "in_progress"
+        },
+        {
+          value: "completed",
+          text: "Completed",
+          checked: task.status == "completed"
+        },
+        {
+          value: "failed",
+          text: "Failed",
+          checked: task.status == "failed"
+        }
+      ],
+      href: "#taskStatus"
+    }) }}
+
+    <label class="govuk-label govuk-label--s" for="task-completion-date">Completion Date</label>
+    <p class="govuk-body">
+      {{ task.due_date }} 
+    </p>
+
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: "Update",
+        attributes: {
+          type: "submit"
+        }
+      }) }}
+      {{ govukButton({
+        text: "Cancel",
+        href: "/tasks",
+        classes: "govuk-button--secondary"
+      }) }}
+    </div>
+  </form>
+
+{% endblock %}
+

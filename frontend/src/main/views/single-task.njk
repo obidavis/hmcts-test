@@ -9,97 +9,70 @@ but ultimately it is up to you -->
 
 {% block content %}
 
-    {{ govukBackLink({
-    text: "Back",
-    href: "/tasks"
-    }) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "/tasks"
+  }) }}
 
-  {% if task.id %}
+  <h1 class="govuk-heading-l">Task Details</h1>
 
-    {{ govukSummaryList({
-      rows: [
-        {
-          key: {
-            text: "ID"
-          },
-          value: {
-            text: task.id
-          },
-          actions: {
-            items: [
-            ]
-          }
+  {{ govukSummaryList({
+    rows: [
+      {
+        key: {
+          text: "Title"
         },
-        {
-          key: {
-            text: "Title"
-          },
-          value: {
-            html: task.title
-          },
-          actions: {
-            items: [
-              {
-                href: "#",
-                text: "Change",
-                visuallyHiddenText: "change case title"
-              }
-            ]
-          }
+        value: {
+          html: task.title
         },
-        {
-          key: {
-            text: "Description"
-          },
-          value: {
-            html: task.description
-          },
-          actions: {
-            items: [
-               {
-                 href: "#",
-                 text: "Delete",
-                 visuallyHiddenText: "Delete description"
-               },
-               {
-                 href: "#",
-                 text: "Change",
-                 visuallyHiddenText: "Change description"
-               }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Status"
-          },
-          value: {
-            html: task.status
-          },
-          actions: {
-            items: [
-                {
-                    href: "#",
-                    text: "Change",
-                    visuallyHiddenText: "change case status"
-                }
-            ]
-          }
-        },
-        {
-          key: {
-           text: "Due Date"
-          },
-          value: {
-           html: task.due_date
-          },
-          actions: {
-           items: [
-           ]
-          }
+        actions: {
+          items: [
+          ]
         }
-      ]
-    }) }}
+      },
+      {
+        key: {
+          text: "Description"
+        },
+        value: {
+          html: task.description
+        },
+        actions: {
+          items: [
+          ]
+        }
+      },
+      {
+        key: {
+          text: "Status"
+        },
+        value: {
+          html: task.status.tag.text
+        },
+        actions: {
+          items: [
+              {
+                  href: "/tasks/" ~ task.id ~ "/update",
+                  text: "Update status",
+                  visuallyHiddenText: "update task status"
+              }
+          ]
+        }
+      },
+      {
+        key: {
+          text: "Due Date"
+        },
+        value: {
+          html: task.due_date
+        },
+        actions: {
+          items: [
+          ]
+        }
+      }
+    ]
+  }) }}
 
 
   <form method="POST" action="/tasks/{{ task.id }}/delete">
@@ -108,6 +81,5 @@ but ultimately it is up to you -->
       classes: "govuk-button--warning"
     }) }}
   </form>
-  {% endif %}
 
 {% endblock %}
