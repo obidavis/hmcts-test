@@ -8,7 +8,7 @@ export default function (app: Application): void {
     try {
       const response = await axios.get('http://localhost:8000/api/v1/tasks');
       const tasks: Task[] = response.data;
-      res.render('tasks', { tasks: tasks.map(task => ({
+      res.render('all-tasks', { tasks: tasks.map(task => ({
         title: {
           text: task.title,
         },
@@ -22,7 +22,7 @@ export default function (app: Application): void {
       })) });
     } catch (error) {
       console.error('Error making request:', error);
-      res.render('tasks', { tasks: [] });
+      res.render('allTasks', { tasks: [] });
     }
   });
 }
