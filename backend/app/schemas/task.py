@@ -10,7 +10,7 @@ class TaskStatus(str, Enum):
     FAILED = "failed"
 
 class TaskBase(BaseModel):
-    title: str = Field(..., description="Title of the task")
+    title: str = Field(..., description="Title of the task", min_length=1)
     description: Optional[str] = Field(None, description="Description of the task")
     status: TaskStatus = Field(..., description="Status of the task (pending, in_progress, completed, failed)")
     due_date: datetime = Field(..., description="Due date of the task in ISO format")
