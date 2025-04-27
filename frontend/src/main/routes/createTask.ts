@@ -76,7 +76,11 @@ export default function (app: Application): void {
         title: req.body.taskTitle,
         description: req.body.taskDescription,
         status: req.body.taskStatus,
-        due_date: `${req.body['dueDate-year']}-${req.body['dueDate-month']}-${req.body['dueDate-day']}`,
+        due_date: new Date(
+          Number.parseInt(req.body['dueDate-year']),
+          Number.parseInt(req.body['dueDate-month']) - 1,
+          Number.parseInt(req.body['dueDate-day'])
+        ).toISOString(),
       };
       try {
         const response = await axios.post('http://localhost:8000/api/v1/tasks', task);
@@ -85,7 +89,10 @@ export default function (app: Application): void {
       } catch (error) {
         console.error('Error making request:', error);
         res.render('create-task', {
-          errors: [{ text: 'Error creating task', href: '#taskTitle', error: true }],
+          errorList: [{
+            text: 'Unexpected error creating task',
+            href: '#',
+          }],
           taskTitle: req.body.taskTitle,
           taskDescription: req.body.taskDescription,
           taskStatus: req.body.taskStatus,

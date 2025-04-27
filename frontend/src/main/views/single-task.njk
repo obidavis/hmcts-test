@@ -1,5 +1,6 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "template.njk" %}
 
@@ -100,6 +101,13 @@ but ultimately it is up to you -->
       ]
     }) }}
 
+
+  <form method="POST" action="/tasks/{{ task.id }}/delete">
+    {{ govukButton({
+      text: "Delete task",
+      classes: "govuk-button--warning"
+    }) }}
+  </form>
   {% endif %}
 
 {% endblock %}
