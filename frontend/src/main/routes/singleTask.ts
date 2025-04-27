@@ -30,7 +30,7 @@ function formatDate(dateString: string): string {
 
 
 export default function (app: Application): void {
-  app.get('/tasks/:id', async (req, res) => {
+  app.get('/tasks/:id(\\d+)', async (req, res) => {
     try {
       const response = await axios.get(`${process.env.BACKEND_URL}/api/v1/tasks/${req.params.id}`);
       const task: Task = response.data;
