@@ -1,0 +1,15 @@
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+{% extends "template.njk" %}
+
+{% block content %}
+  <h1 class="govuk-heading-xl">Task Management</h1>
+
+  {% if tasks | length == 0 %}
+    <h2 class="govuk-heading-l">No tasks available</h2>
+  {% else %}
+    {{ govukTaskList({
+      items: tasks
+    }) }}
+  {% endif %}
+{% endblock %}

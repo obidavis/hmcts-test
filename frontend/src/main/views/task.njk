@@ -1,0 +1,105 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% extends "template.njk" %}
+
+<!-- You may want to make further use of these components: https://design-system.service.gov.uk/components/
+but ultimately it is up to you -->
+
+{% block content %}
+
+    {{ govukBackLink({
+    text: "Back",
+    href: "/tasks"
+    }) }}
+
+  {% if task.id %}
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: {
+            text: "ID"
+          },
+          value: {
+            text: task.id
+          },
+          actions: {
+            items: [
+            ]
+          }
+        },
+        {
+          key: {
+            text: "Title"
+          },
+          value: {
+            html: task.title
+          },
+          actions: {
+            items: [
+              {
+                href: "#",
+                text: "Change",
+                visuallyHiddenText: "change case title"
+              }
+            ]
+          }
+        },
+        {
+          key: {
+            text: "Description"
+          },
+          value: {
+            html: task.description
+          },
+          actions: {
+            items: [
+               {
+                 href: "#",
+                 text: "Delete",
+                 visuallyHiddenText: "Delete description"
+               },
+               {
+                 href: "#",
+                 text: "Change",
+                 visuallyHiddenText: "Change description"
+               }
+            ]
+          }
+        },
+        {
+          key: {
+            text: "Status"
+          },
+          value: {
+            html: task.status
+          },
+          actions: {
+            items: [
+                {
+                    href: "#",
+                    text: "Change",
+                    visuallyHiddenText: "change case status"
+                }
+            ]
+          }
+        },
+        {
+          key: {
+           text: "Due Date"
+          },
+          value: {
+           html: task.due_date
+          },
+          actions: {
+           items: [
+           ]
+          }
+        }
+      ]
+    }) }}
+
+  {% endif %}
+
+{% endblock %}
