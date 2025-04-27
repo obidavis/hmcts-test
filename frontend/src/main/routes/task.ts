@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Application } from 'express';
 
 export default function (app: Application): void {
-  app.get('/tasks/:id', async (req, res) => {
+  app.get('/tasks/view/:id', async (req, res) => {
     try {
       const response = await axios.get(`http://localhost:8000/api/v1/tasks/${req.params.id}`);
       const task: Task = response.data;

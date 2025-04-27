@@ -1,0 +1,158 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% extends "template.njk" %}
+
+{% block content %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/tasks"
+  }) }}
+
+  {% if errors %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      description: "Please fix the following errors:",
+      errorList: errorList
+    }) }}
+  {% endif %}
+
+<form action="/tasks/create" method="POST">
+  {% call govukFieldset({
+    legend: {
+      text: "Create New Task",
+      classes: "govuk-fieldset__legend--l",
+      isPageHeading: true
+    }
+  }) %}
+
+  {{ govukInput({
+    label: {
+      text: "Title",
+      classes: "govuk-label--s"
+    },
+    id: "task-title",
+    name: "taskTitle",
+    autocomplete: "task-title",
+    value: data.taskTitle or "",
+    errorMessage: errors.taskTitle and {
+      text: errors.taskTitle
+    } or null,
+    href: "#taskTitle"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Description (optional)",
+      classes: "govuk-label--s"
+    },
+    id: "task-description",
+    name: "taskDescription",
+    value: data.taskDescription,
+    autocomplete: "task-description",
+    isTextArea: true,
+    errorMessage: errors.taskDescription and {
+      text: errors.taskDescription
+    } or null,
+    href: "#taskDescription"
+  }) }}
+
+  {{ govukRadios({
+    classes: "govuk-radios--small",
+    name: "taskStatus",
+    fieldset: {
+      legend: {
+        text: "Status",
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--s"
+      }
+    },
+    items: [
+      {
+        value: "pending",
+        text: "Pending",
+        checked: data.taskStatus == "pending"
+      },
+      {
+        value: "in_progress",
+        text: "In Progress",
+        checked: data.taskStatus == "in_progress"
+      },
+      {
+        value: "completed",
+        text: "Completed",
+        checked: data.taskStatus == "completed"
+      },
+      {
+        value: "failed",
+        text: "Failed",
+        checked: data.taskStatus == "failed"
+      }
+    ],
+    errorMessage: errors.taskStatus and {
+      text: errors.taskStatus
+    } or null,
+    href: "#taskStatus"
+  }) }}
+
+  {{ govukDateInput({
+    id: "due-date",
+    namePrefix: "dueDate",
+    fieldset: {
+      legend: {
+        text: "Due Date",
+        classes: "govuk-fieldset__legend--s"
+      }
+    },
+    hint: {
+      text: "For example, 27 3 2007"
+    },
+    items: [
+      {
+        classes: "govuk-input--width-2 govuk-input--error",
+        name: "day",
+        value: data.dueDate.day or ""
+      },
+      {
+        classes: "govuk-input--width-2 govuk-input--error",
+        name: "month",
+        value: data.dueDate.month or ""
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error",
+        name: "year",
+        value: data.dueDate.year or ""
+      }
+    ],
+    errorMessage: errors.dueDate and {
+      text: errors.dueDate
+    } or null,
+    href: "#dueDate"
+  }) }}
+
+  
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Submit",
+      attributes: {
+        type: "submit"
+      }
+    }) }}
+
+    {{ govukButton({
+      text: "Cancel",
+      href: "/tasks",
+      classes: "govuk-button--secondary"
+    }) }}
+  </div>
+
+  {% endcall %}
+
+</form>
+{% endblock %}
+
