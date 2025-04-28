@@ -60,25 +60,25 @@ Due to time constraints, not all frontend tests have been implemented. Neverthel
 
 ### Splash screen
 
-[splash screen](screenshots/splash.png)
+![splash screen](screenshots/splash.png)
 
 ### Task list
 
-[task list](screenshots/task-list.png)
+![task list](screenshots/task-list.png)
 
 ### Task Details
 
-[task details](screenshots/task-details.png)
+![task details](screenshots/task-details.png)
 
 ### Update Task Status
 
-[update task status](screenshots/update-task.png)
+![update task status](screenshots/update-task.png)
 
 ### Create Task
 
-[create task](screenshots/create-task.png)
+![create task](screenshots/create-task.png)
 
 ### Error Reporting
 
-[create task error 1](screenshots/create-task-error-1.png)
-[create task error 2](screenshots/create-task-error-2.png)
+![create task error 1](screenshots/create-task-error-1.png)
+![create task error 2](screenshots/create-task-error-2.png)
