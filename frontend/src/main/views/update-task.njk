@@ -14,6 +14,9 @@
     href: "/tasks/" ~ task.id
   }) }}
 
+  <h1 class="govuk-heading-l">Update Task Details</h1>
+  <p class="govuk-body">Update the status of the task.</p>
+
   <form method="POST" action="/tasks/{{ task.id }}/update">
     <label class="govuk-label govuk-label--s" for="task-title">Title</label>
     <p class="govuk-body">{{ task.title }}</p>
