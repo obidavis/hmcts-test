@@ -68,7 +68,14 @@ export default function (app: Application): void {
       res.render('create-task', {
         errors,
         errorList,
-        data: req.body,
+        data: {
+          dueDate: {
+            day: req.body['dueDate-day'],
+            month: req.body['dueDate-month'],
+            year: req.body['dueDate-year'],
+          },
+          ...req.body,
+        }
       });
       return;
     } else {
